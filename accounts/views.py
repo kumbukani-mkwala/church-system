@@ -1,0 +1,71 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+
+# -------------------------------
+# LOGIN VIEW
+# -------------------------------
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+
+            # redirect based on role
+            if user.role == 'pastor':
+                return redirect('pastor_dashboard')
+            elif user.role == 'treasurer':
+                return redirect('treasurer_dashboard')
+            elif user.role == 'secretary':
+                return redirect('secretary_dashboard')
+            else:
+                return redirect('member_dashboard')
+
+    return render(request, 'accounts/login.html')
+
+
+# -------------------------------
+# ROLE DECORATOR
+# -------------------------------
+def role_required(role):
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            if request.user.role != role:
+                return HttpResponse("Access Denied ❌")
+            return view_func(request, *args, **kwargs)
+        return wrapper
+    return decorator
+
+
+# -------------------------------
+# DASHBOARDS
+# -------------------------------
+@login_required
+@role_required('pastor')
+def pastor_dashboard(request):
+    return render(request, 'dashboards/pastor.html')
+
+
+@login_required
+@role_required('treasurer')
+def treasurer_dashboard(request):
+    return render(request, 'dashboards/treasurer.html')
+
+
+@login_required
+@role_required('secretary')
+def secretary_dashboard(request):
+    return render(request, 'dashboards/secretary.html')
+
+
+@login_required
+def member_dashboard(request):
+    return render(request, 'dashboards/member.html')
+
+def home(request):
+    return render(request, 'home.html')
