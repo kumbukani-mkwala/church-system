@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'announcements',
     'events',
     'prayers',
+    'members',
 ]
 
 MIDDLEWARE = [

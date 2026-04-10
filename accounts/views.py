@@ -3,20 +3,21 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
+
 # -------------------------------
 # LOGIN VIEW
 # -------------------------------
 def user_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
 
-            # redirect based on role
+            # Role-based redirect
             if user.role == 'pastor':
                 return redirect('pastor_dashboard')
             elif user.role == 'treasurer':
@@ -25,6 +26,10 @@ def user_login(request):
                 return redirect('secretary_dashboard')
             else:
                 return redirect('member_dashboard')
+        else:
+            return render(request, 'accounts/login.html', {
+                'error': 'Invalid username or password'
+            })
 
     return render(request, 'accounts/login.html')
 
@@ -67,5 +72,9 @@ def secretary_dashboard(request):
 def member_dashboard(request):
     return render(request, 'dashboards/member.html')
 
+
+# -------------------------------
+# HOME PAGE
+# -------------------------------
 def home(request):
     return render(request, 'home.html')
