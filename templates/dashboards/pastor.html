@@ -1,23 +1,85 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Pastor Dashboard</h2>
 
-<div class="row mt-4">
+<div class="container mt-4">
 
-    <div class="col-md-4">
-        <div class="card shadow p-3">
-            <h5>Sermons</h5>
-            <p>Upload and manage sermons</p>
-        </div>
+    <!-- Page Title -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Pastor Dashboard</h2>
+        <span class="text-muted">Welcome, {{ request.user.username }}</span>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow p-3">
-            <h5>Prayer Requests</h5>
-            <p>View member prayer requests</p>
+    <!-- Stats Section -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card text-white bg-primary shadow">
+                <div class="card-body">
+                    <h5>Total Members</h5>
+                    <h3>120</h3>
+                </div>
+            </div>
         </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-success shadow">
+                <div class="card-body">
+                    <h5>Sermons Uploaded</h5>
+                    <h3>15</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-white bg-warning shadow">
+                <div class="card-body">
+                    <h5>Prayer Requests</h5>
+                    <h3>8</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Main Features -->
+    <div class="row">
+
+        <!-- Sermons -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📖 Sermons</h5>
+                    <p class="card-text">Upload, edit and manage sermons.</p>
+                    <a href="#" class="btn btn-primary">Manage Sermons</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prayer Requests -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">🙏 Prayer Requests</h5>
+                    <p class="card-text">View and respond to member prayers.</p>
+                    <a href="#" class="btn btn-warning">View Requests</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Announcements -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📢 Announcements</h5>
+                    <p class="card-text">Post updates to the church.</p>
+                    <a href="#" class="btn btn-success">Create Announcement</a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </div>
+
 {% endblock %}
