@@ -1,81 +1,175 @@
 {% extends 'base.html' %}
 
+{% block page_title %}Pastor Dashboard{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
+<div class="container-fluid px-4 mt-4">
 
-    <!-- Page Title -->
+    <!-- HEADER -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Pastor Dashboard</h2>
-        <span class="text-muted">Welcome, {{ request.user.username }}</span>
+        <div>
+            <h3 class="fw-bold mb-0">Pastor Dashboard</h3>
+            <small class="text-muted">Spiritual leadership and church engagement</small>
+        </div>
     </div>
 
-    <!-- Stats Section -->
-    <div class="row mb-4">
+    <!-- KPI SECTION -->
+    <div class="row g-4 mb-4">
 
         <div class="col-md-3">
-            <div class="card text-white bg-primary shadow">
-                <div class="card-body">
-                    <h5>Total Members</h5>
-                    <h3>120</h3>
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-people fs-3 text-primary me-3"></i>
+                    <div>
+                        <small class="text-muted">Total Members</small>
+                        <h5 class="fw-bold mb-0">{{ total_members }}</h5>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card text-white bg-success shadow">
-                <div class="card-body">
-                    <h5>Sermons Uploaded</h5>
-                    <h3>15</h3>
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-journal-richtext fs-3 text-success me-3"></i>
+                    <div>
+                        <small class="text-muted">Sermons</small>
+                        <h5 class="fw-bold mb-0">{{ total_sermons }}</h5>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card text-white bg-warning shadow">
-                <div class="card-body">
-                    <h5>Prayer Requests</h5>
-                    <h3>8</h3>
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-chat-dots fs-3 text-warning me-3"></i>
+                    <div>
+                        <small class="text-muted">Prayer Requests</small>
+                        <h5 class="fw-bold mb-0">{{ total_prayers }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center">
+                    <i class="bi bi-megaphone fs-3 text-dark me-3"></i>
+                    <div>
+                        <small class="text-muted">Announcements</small>
+                        <h5 class="fw-bold mb-0">{{ total_announcements }}</h5>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Main Features -->
-    <div class="row">
+    <!-- MAIN CONTENT -->
+    <div class="row g-4">
 
-        <!-- Sermons -->
-        <div class="col-md-4 mb-3">
-            <div class="card shadow h-100">
-                <div class="card-body text-center">
-                    <h5 class="card-title">📖 Sermons</h5>
-                    <p class="card-text">Upload, edit and manage sermons.</p>
-                    <a href="#" class="btn btn-primary">Manage Sermons</a>
+        <!-- LEFT SIDE -->
+        <div class="col-lg-8">
+
+            <!-- RECENT SERMONS -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0 d-flex justify-content-between">
+                    <h6 class="fw-bold mb-0">Recent Sermons</h6>
+                    <a href="#" class="btn btn-sm btn-outline-dark">Manage</a>
+                </div>
+
+                <div class="card-body">
+
+                    {% for sermon in sermons|slice:":5" %}
+                        <div class="d-flex justify-content-between align-items-start mb-3 pb-2 border-bottom">
+                            <div>
+                                <h6 class="mb-1">{{ sermon.title }}</h6>
+                                <small class="text-muted">
+                                    {{ sermon.created_at|date:"M d, Y" }}
+                                </small>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No sermons available</p>
+                    {% endfor %}
+
                 </div>
             </div>
+
+            <!-- RECENT PRAYERS -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 d-flex justify-content-between">
+                    <h6 class="fw-bold mb-0">Recent Prayer Requests</h6>
+                    <a href="/prayers/view/" class="btn btn-sm btn-outline-dark">View All</a>
+                </div>
+
+                <div class="card-body">
+
+                    {% for prayer in prayers|slice:":5" %}
+                        <div class="mb-3 pb-2 border-bottom">
+                            <p class="mb-1">{{ prayer.message }}</p>
+                            <small class="text-muted">
+                                {{ prayer.user }} • {{ prayer.created_at|date:"M d, Y" }}
+                            </small>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">No prayer requests</p>
+                    {% endfor %}
+
+                </div>
+            </div>
+
         </div>
 
-        <!-- Prayer Requests -->
-        <div class="col-md-4 mb-3">
-            <div class="card shadow h-100">
-                <div class="card-body text-center">
-                    <h5 class="card-title">🙏 Prayer Requests</h5>
-                    <p class="card-text">View and respond to member prayers.</p>
-                    <a href="#" class="btn btn-warning">View Requests</a>
-                </div>
-            </div>
-        </div>
+        <!-- RIGHT SIDE -->
+        <div class="col-lg-4">
 
-        <!-- Announcements -->
-        <div class="col-md-4 mb-3">
-            <div class="card shadow h-100">
-                <div class="card-body text-center">
-                    <h5 class="card-title">📢 Announcements</h5>
-                    <p class="card-text">Post updates to the church.</p>
-                    <a href="#" class="btn btn-success">Create Announcement</a>
+            <!-- QUICK ACTIONS -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-white border-0">
+                    <h6 class="fw-bold mb-0">Quick Actions</h6>
+                </div>
+
+                <div class="card-body d-grid gap-2">
+
+                    <a href="#" class="btn btn-dark">
+                        <i class="bi bi-upload"></i> Upload Sermon
+                    </a>
+
+                    <a href="#" class="btn btn-outline-dark">
+                        <i class="bi bi-megaphone"></i> Create Announcement
+                    </a>
+
+                    <a href="/prayers/view/" class="btn btn-outline-dark">
+                        <i class="bi bi-chat-left-text"></i> View Prayers
+                    </a>
+
                 </div>
             </div>
+
+            <!-- MINISTRY INSIGHT -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <h6 class="fw-bold mb-0">Ministry Insight</h6>
+                </div>
+
+                <div class="card-body">
+
+                    <p class="text-muted small mb-2">
+                        Track engagement across sermons and prayer activity.
+                    </p>
+
+                    <ul class="list-unstyled small mb-0">
+                        <li>• Members growing steadily</li>
+                        <li>• Prayer requests increasing</li>
+                        <li>• Sermon engagement active</li>
+                    </ul>
+
+                </div>
+            </div>
+
         </div>
 
     </div>

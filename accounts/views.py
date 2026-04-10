@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-
+from prayers.models import PrayerRequest
+from members.models import Member
 
 # -------------------------------
 # LOGIN VIEW
@@ -50,10 +51,21 @@ def role_required(role):
 # -------------------------------
 # DASHBOARDS
 # -------------------------------
+   
 @login_required
 @role_required('pastor')
 def pastor_dashboard(request):
-    return render(request, 'dashboards/pastor.html')
+    prayers = PrayerRequest.objects.all().order_by('-created_at')
+
+    context = {
+        'prayers': prayers,
+        'total_members': Member.objects.count(),
+        'total_sermons': 0,  # update later
+        'total_prayers': PrayerRequest.objects.count(),
+        'total_announcements': 0  # update later
+    }
+
+    return render(request, 'dashboards/pastor.html', context)
 
 
 @login_required
