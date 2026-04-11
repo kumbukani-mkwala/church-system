@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Praise Team Chat{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <div class="card shadow-sm border-0">
+
+        <!-- HEADER -->
+        <div class="card-header bg-dark text-white">
+            🎤 Praise Team Chat Room
+        </div>
+
+        <!-- CHAT BOX -->
+        <div class="card-body" style="height:400px; overflow-y:auto; background:#f8f9fa;">
+
+            <div class="mb-2">
+                <strong>Leader:</strong> Please prepare for Sunday worship practice
+            </div>
+
+            <div class="mb-2 text-end">
+                <span class="badge bg-primary">I am ready for practice 🙏</span>
+            </div>
+
+        </div>
+
+        <!-- INPUT -->
+        <div class="card-footer d-flex gap-2">
+            <input class="form-control" placeholder="Type message...">
+            <button class="btn btn-dark">Send</button>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

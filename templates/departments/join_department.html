@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h3>Join Department</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- SELECT -->
+        <label>Select Department</label>
+        <select name="department" class="form-control mb-3" required>
+            <option value="">-- Select --</option>
+
+            {% for d in departments %}
+                <option value="{{ d.id }}">{{ d.name }}</option>
+            {% endfor %}
+
+        </select>
+
+        <!-- MOTIVATION -->
+        <textarea name="motivation" class="form-control mb-3"
+                  placeholder="Why do you want to join?" required></textarea>
+
+        <button class="btn btn-dark w-100">Submit</button>
+
+    </form>
+
+</div>
+
+{% endblock %}
