@@ -61,18 +61,23 @@ def approve_membership(request, membership_id):
 # -------------------------
 # MEMBER DASHBOARD
 # -------------------------
+@login_required
 def member_dashboard(request):
 
     memberships = DepartmentMembership.objects.filter(
         user=request.user
-    ).select_related('department')
+    ).select_related('department').order_by('-created_at')
 
-    print("MEMBERSHIPS:", memberships)  # DEBUG
+    # OPTIONAL (only if you have these models)
+    sermons = Sermon.objects.all().order_by('-created_at') if 'Sermon' in globals() else []
+    announcements = Announcement.objects.all().order_by('-created_at') if 'Announcement' in globals() else []
 
     return render(request, "member/member.html", {
-        "memberships": memberships
-    }) 
-    
+        "memberships": memberships,
+        "sermons": sermons,
+        "announcements": announcements,
+    })
+
 # -------------------------
 # CHATS
 # -------------------------
